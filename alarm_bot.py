@@ -25,15 +25,13 @@ def handle(msg):
 
 
 config = toml.load('./config/default.toml')
-print(str(config))
-
 TOKEN = config['telegram']['token']
 
-bot = telepot.Bot(TOKEN)
-MessageLoop(bot, handle).run_as_thread()
-print ('Listening ...')
+if __name__ == '__main__':
+    bot = telepot.Bot(TOKEN)
+    MessageLoop(bot, handle).run_as_thread()
+    print ('Listening ...')
 
-# Keep the program running.
-while 1:
-    time.sleep(10)
-
+    # Keep the program running.
+    while 1:
+        time.sleep(10)
