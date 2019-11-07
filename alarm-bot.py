@@ -1,7 +1,7 @@
 import os
 import subprocess
 import time
-
+import toml
 import telepot
 from telepot.loop import MessageLoop
 
@@ -24,7 +24,10 @@ def handle(msg):
         bot.sendVideo(chat_id, files)
 
 
-TOKEN = 'TOKEN'
+config = toml.load('./config/default.toml')
+print(str(config))
+
+TOKEN = config['telegram']['token']
 
 bot = telepot.Bot(TOKEN)
 MessageLoop(bot, handle).run_as_thread()
