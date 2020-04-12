@@ -3,11 +3,13 @@
 import RPi.GPIO as GPIO
 import time
 from alarm_manager import *
-from camera_pi import *
+from camera import *
+import commander
 
 PIR_OUT_PIN = 11  # pin11
 
 TIME_TO_SLEEP_SEC = 0.3
+
 
 class MotionDetector:
     def __init__(self, alarm_manager):
@@ -23,6 +25,7 @@ class MotionDetector:
                 time.sleep(TIME_TO_SLEEP_SEC)
             else:
                 self.alarm_manager.movement_detected()
+                commander.send_message('enemy is detected')
                 time.sleep(TIME_TO_SLEEP_SEC)
 
     def destroy(self):
@@ -31,12 +34,3 @@ class MotionDetector:
     def dispose(self):
         GPIO.cleanup()  # Release resource
         self.alarm_manager.dispose()
-
-
-if __name__ == '__main__':
-    motionDetector = MotionDetector(AlarmManager(Camera()))
-    motionDetector.setup()
-    try:
-        motionDetector.loop()
-    except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
-        motionDetector.destroy()
